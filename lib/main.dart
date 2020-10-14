@@ -36,13 +36,27 @@ class InputValuePage extends StatefulWidget {
 
 class _InputValuePageState extends State<InputValuePage> {
   Currency selectedCurrency;
+  double value;
   double amount;
+
+  _addToPortfolio() async {
+    await http.post('http://10.0.2.2:3000/portfolio',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'symbol': selectedCurrency.symbol,
+          'amount': amount
+        }));
+  }
 
   @override
   initState() {
     super.initState();
 
     selectedCurrency = widget.selectedCurrency;
+    value = 0;
+    amount = 0;
   }
 
   @override
@@ -57,12 +71,28 @@ class _InputValuePageState extends State<InputValuePage> {
               children: [
                 TextField(onChanged: (text) {
                   setState(() {
-                    amount = double.parse(text);
+                    var inputValue;
+
+                    if (text == '') {
+                      inputValue = 0.0;
+                    } else {
+                      inputValue = double.parse(text);
+                    }
+
+                    amount = inputValue;
+                    value = (inputValue * selectedCurrency.price);
                   });
                 }),
+                Text.rich(TextSpan(children: <TextSpan>[
+                  TextSpan(text: 'R\$'),
+                  TextSpan(text: value.toStringAsFixed(2))
+                ])),
                 FlatButton(
                   onPressed: () {
-                    print(amount);
+                    _addToPortfolio();
+
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   child: Text('Confirmar'),
                 )
@@ -138,6 +168,25 @@ class PortfolioPage extends StatefulWidget {
 class _PortfolioPageState extends State<PortfolioPage> {
   List<Currency> currencyList;
 
+  Future<List<PortfolioAsset>> _getPortfolio() async {
+    // Android emulator does not recognize localhost, might not work on iOS
+    var data = await http.get('http://10.0.2.2:3000/portfolio');
+
+    var jsonData = json.decode(data.body);
+
+    List<PortfolioAsset> _portfolioList = [];
+
+    for (var e in jsonData) {
+      var currency =
+          currencyList.firstWhere((item) => item.symbol == e['symbol']);
+
+      var newAsset = PortfolioAsset(currency, e['amount'].toDouble());
+      _portfolioList.add(newAsset);
+    }
+
+    return _portfolioList;
+  }
+
   @override
   initState() {
     super.initState();
@@ -153,14 +202,59 @@ class _PortfolioPageState extends State<PortfolioPage> {
         ),
         body: Container(
             padding: const EdgeInsets.only(top: 25),
-            child: Column(
-              children: [
-                Center(
-                  child: Text(
-                      'Clique no botão abaixo para adicionar seu primeiro ativo'),
-                ),
-              ],
-            )),
+            child: FutureBuilder(
+                future: _getPortfolio(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.data == null) {
+                    return Container(
+                        child: Center(child: Text("Carregando...")));
+                  } else {
+                    if (snapshot.data == []) {
+                      return (Center(
+                        child: Text(
+                            'Clique no botão abaixo para adicionar seu primeiro ativo'),
+                      ));
+                    } else {
+                      return Column(
+                        children: [
+                          Expanded(
+                              child: ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                  leading: Text(
+                                      snapshot.data[index].amount.toString()),
+                                  title: Text(
+                                      snapshot.data[index].currency.symbol),
+                                  subtitle: Text.rich(TextSpan(children: [
+                                    TextSpan(text: 'R\$'),
+                                    TextSpan(
+                                        text: (snapshot.data[index].currency
+                                                    .price *
+                                                snapshot.data[index].amount)
+                                            .toStringAsFixed(2))
+                                  ])),
+                                  trailing: Text.rich(TextSpan(
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: snapshot.data[index].currency
+                                                .priceChange
+                                                .toStringAsFixed(2)),
+                                        TextSpan(text: '%')
+                                      ],
+                                      style: TextStyle(
+                                          color: snapshot.data[index].currency
+                                                      .priceChange >=
+                                                  0
+                                              ? Colors.green
+                                              : Colors.red))));
+                            },
+                          ))
+                        ],
+                      );
+                    }
+                  }
+                })),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
               Navigator.push(
@@ -356,4 +450,11 @@ class Currency {
 
   Currency(
       this.name, this.symbol, this.price, this.priceChange, this.marketCap);
+}
+
+class PortfolioAsset {
+  final Currency currency;
+  final double amount;
+
+  PortfolioAsset(this.currency, this.amount);
 }
