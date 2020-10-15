@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/currency.dart';
 import '../widgets/button-row.dart';
+import '../widgets/sorted-list.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -54,36 +55,7 @@ class _HomePageState extends State<HomePage> {
               } else {
                 return Column(children: [
                   ButtonRow(snapshot.data),
-                  Expanded(
-                      child: ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                          leading: Text.rich(TextSpan(children: <TextSpan>[
-                            TextSpan(text: (index + 1).toString()),
-                            TextSpan(text: ' '),
-                            TextSpan(text: snapshot.data[index].symbol)
-                          ])),
-                          title: Text(snapshot.data[index].name),
-                          subtitle: Text.rich(TextSpan(children: [
-                            TextSpan(text: 'R\$'),
-                            TextSpan(
-                                text: snapshot.data[index].price
-                                    .toStringAsFixed(2))
-                          ])),
-                          trailing: Text.rich(TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: snapshot.data[index].priceChange
-                                        .toStringAsFixed(2)),
-                                TextSpan(text: '%')
-                              ],
-                              style: TextStyle(
-                                  color: snapshot.data[index].priceChange >= 0
-                                      ? Colors.green
-                                      : Colors.red))));
-                    },
-                  ))
+                  SortedList(snapshot.data, (currency) {})
                 ]);
               }
             },
