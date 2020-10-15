@@ -1,16 +1,13 @@
 # Cryptolisted
 
-A new Flutter project.
+This project was developed for the first evaluation of the Flutter course offered by PUC-Rio. The app lists the top cryptocurrencies given by CoinMarketCap's sandbox API and also includes a portfolio to keep track of investments.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Steps to run the app:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. [Install Flutter](https://flutter.dev/docs/get-started/install)
+2. Clone this repo
+3. [Clone the portfolio API](https://github.com/rlveiga/cryptolisted-api)
+4. Inside the portfolio API project, run `yarn && yarn start` (or `npm install && npm start`)
+5. Inside the Flutter project, run `flutter run`
