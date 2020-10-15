@@ -41,7 +41,7 @@ class _SelectCurrencyPageState extends State<SelectCurrencyPage> {
                 TextField(onChanged: (text) {
                   setState(() {
                     currencyList = widget.currencyList
-                        .where((i) => i.name.toLowerCase().contains(text))
+                        .where((i) => i.name.toLowerCase().contains(text.toLowerCase()))
                         .toList();
                   });
                 }),
