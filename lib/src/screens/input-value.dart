@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 
 import '../models/currency.dart';
 
+import 'package:Cryptolisted/notification-plugin.dart';
+
 class InputValuePage extends StatefulWidget {
   InputValuePage({Key key, this.title, this.selectedCurrency})
       : super(key: key);
@@ -30,6 +32,8 @@ class _InputValuePageState extends State<InputValuePage> {
           'symbol': selectedCurrency.symbol,
           'amount': amount
         }));
+
+    notificationPlugin.showNotification('${selectedCurrency.name} adicionado ao Portfolio!', null);
   }
 
   @override
