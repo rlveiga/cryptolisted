@@ -82,7 +82,7 @@ class _InputValuePageState extends State<InputValuePage> {
                     Navigator.pop(context);
                     Navigator.pop(context);
                   },
-                  child: Text(AppLocalizations.of(context).loading),
+                  child: Text(AppLocalizations.of(context).confirm),
                 )
               ],
             )));

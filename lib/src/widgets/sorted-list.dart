@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/currency.dart';
 
 class SortedList extends StatelessWidget {
-  String value = '';
   List<Currency> _currencyList = [];
   Function onCurrencySelect;
 

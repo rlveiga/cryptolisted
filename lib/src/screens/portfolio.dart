@@ -1,27 +1,26 @@
 import 'dart:convert';
 
 import 'package:Cryptolisted/src/screens/select-currency.dart';
+import 'package:Cryptolisted/src/stores/currency.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/portfolio-asset.dart';
 import '../models/currency.dart';
+import '../models/portfolio-asset.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+final currencyStore = CurrencyStore();
 
 class PortfolioPage extends StatefulWidget {
-  PortfolioPage({Key key, this.title, this.currencyList}) : super(key: key);
+  PortfolioPage({Key key, this.title}) : super(key: key);
 
   final String title;
-  final List<Currency> currencyList;
 
   @override
   _PortfolioPageState createState() => _PortfolioPageState();
 }
 
 class _PortfolioPageState extends State<PortfolioPage> {
-  List<Currency> currencyList;
-
   Future<List<PortfolioAsset>> _getPortfolio() async {
     // Android emulator does not recognize localhost, might not work on iOS
     var data = await http.get('http://10.0.2.2:3000/portfolio');
@@ -30,22 +29,17 @@ class _PortfolioPageState extends State<PortfolioPage> {
 
     List<PortfolioAsset> _portfolioList = [];
 
+    print(currencyStore.currencyList);
+
     for (var e in jsonData) {
-      var currency =
-          currencyList.firstWhere((item) => item.symbol == e['symbol']);
+      var currency = currencyStore.currencyList
+          .firstWhere((item) => item.symbol == e['symbol']);
 
       var newAsset = PortfolioAsset(currency, e['amount'].toDouble());
       _portfolioList.add(newAsset);
     }
 
     return _portfolioList;
-  }
-
-  @override
-  initState() {
-    super.initState();
-
-    currencyList = widget.currencyList;
   }
 
   @override
@@ -61,11 +55,13 @@ class _PortfolioPageState extends State<PortfolioPage> {
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.data == null) {
                     return Container(
-                        child: Center(child: Text(AppLocalizations.of(context).loading)));
+                        child: Center(
+                            child: Text(AppLocalizations.of(context).loading)));
                   } else {
                     if (snapshot.data == []) {
                       return (Center(
-                        child: Text(AppLocalizations.of(context).addToPortfolio),
+                        child:
+                            Text(AppLocalizations.of(context).addToPortfolio),
                       ));
                     } else {
                       return Column(
@@ -114,8 +110,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => SelectCurrencyPage(
-                          title: AppLocalizations.of(context).addCurrencyTitle,
-                          currencyList: currencyList)));
+                          title:
+                              AppLocalizations.of(context).addCurrencyTitle)));
             },
             child: Icon(Icons.add)));
   }

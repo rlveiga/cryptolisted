@@ -1,13 +1,12 @@
-import 'dart:convert';
-
+import 'package:Cryptolisted/src/stores/currency.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../models/currency.dart';
 import '../widgets/button-row.dart';
 import '../widgets/sorted-list.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+final currencyStore = CurrencyStore();
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -19,26 +18,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<List<Currency>> _getCurrencies() async {
-    var data = await http.get(
-        'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
-        headers: {'X-CMC_PRO_API_KEY': 'b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c'});
-    var jsonData = json.decode(data.body)["data"];
+  _getCurrencies() async {
+    await currencyStore.getCurrencyList();
 
-    List<Currency> _currencyList = [];
-
-    for (var e in jsonData) {
-      Currency currency = Currency(
-          e["name"],
-          e["symbol"],
-          e["quote"]["USD"]["price"] * 5.6,
-          e["quote"]["USD"]["percent_change_24h"],
-          e["quote"]["USD"]["market_cap"] * 5.6);
-
-      _currencyList.add(currency);
-    }
-
-    return _currencyList;
+    return currencyStore.currencyList;
   }
 
   @override
@@ -56,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                 return Container(child: Center(child: Text(AppLocalizations.of(context).loading)));
               } else {
                 return Column(children: [
-                  ButtonRow(snapshot.data),
+                  ButtonRow(),
                   SortedList(snapshot.data, (currency) {})
                 ]);
               }
