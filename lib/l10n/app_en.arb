@@ -1,0 +1,26 @@
+{
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Default text when data is being loaded"
+  },
+  "portfolioButton": "My Portfolio",
+  "@portfolioButton": {
+    "description": "Home portfolio button label"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": ""
+  },
+  "addToPortfolio": "Click on the button below to add your first cryptocurrency",
+  "@addToPortfolio": {
+    "description": ""
+  },
+  "portfolioAddQuestion": "Which cryptocurrency would you like to add?",
+  "@portfolioAddQuestion": {
+    "description": ""
+  },
+  "addCurrencyTitle": "Add transaction",
+  "@addCurrencyTitle": {
+    "description": ""
+  }
+}

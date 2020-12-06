@@ -4,6 +4,8 @@ import './input-value.dart';
 import '../models/currency.dart';
 import '../widgets/sorted-list.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class SelectCurrencyPage extends StatefulWidget {
   SelectCurrencyPage({Key key, this.title, this.currencyList})
       : super(key: key);
@@ -36,7 +38,7 @@ class _SelectCurrencyPageState extends State<SelectCurrencyPage> {
             child: Column(
               children: [
                 Center(
-                  child: Text('Qual criptomoeda gostaria de adicionar?'),
+                  child: Text(AppLocalizations.of(context).portfolioAddQuestion),
                 ),
                 TextField(onChanged: (text) {
                   setState(() {

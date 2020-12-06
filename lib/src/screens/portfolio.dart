@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import '../models/portfolio-asset.dart';
 import '../models/currency.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class PortfolioPage extends StatefulWidget {
   PortfolioPage({Key key, this.title, this.currencyList}) : super(key: key);
 
@@ -59,12 +61,11 @@ class _PortfolioPageState extends State<PortfolioPage> {
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.data == null) {
                     return Container(
-                        child: Center(child: Text("Carregando...")));
+                        child: Center(child: Text(AppLocalizations.of(context).loading)));
                   } else {
                     if (snapshot.data == []) {
                       return (Center(
-                        child: Text(
-                            'Clique no botão abaixo para adicionar seu primeiro ativo'),
+                        child: Text(AppLocalizations.of(context).addToPortfolio),
                       ));
                     } else {
                       return Column(
@@ -113,7 +114,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => SelectCurrencyPage(
-                          title: 'Adicionar transação',
+                          title: AppLocalizations.of(context).addCurrencyTitle,
                           currencyList: currencyList)));
             },
             child: Icon(Icons.add)));

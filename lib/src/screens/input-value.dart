@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../models/currency.dart';
 
 import 'package:Cryptolisted/notification-plugin.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InputValuePage extends StatefulWidget {
   InputValuePage({Key key, this.title, this.selectedCurrency})
@@ -81,7 +82,7 @@ class _InputValuePageState extends State<InputValuePage> {
                     Navigator.pop(context);
                     Navigator.pop(context);
                   },
-                  child: Text('Confirmar'),
+                  child: Text(AppLocalizations.of(context).loading),
                 )
               ],
             )));

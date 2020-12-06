@@ -7,6 +7,8 @@ import '../models/currency.dart';
 import '../widgets/button-row.dart';
 import '../widgets/sorted-list.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
 
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage> {
             future: _getCurrencies(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.data == null) {
-                return Container(child: Center(child: Text("Carregando...")));
+                return Container(child: Center(child: Text(AppLocalizations.of(context).loading)));
               } else {
                 return Column(children: [
                   ButtonRow(snapshot.data),

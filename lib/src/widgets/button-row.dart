@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../models/currency.dart';
 import '../screens/portfolio.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class ButtonRow extends StatelessWidget {
   final List<Currency> _currencyList;
 
@@ -19,9 +21,9 @@ class ButtonRow extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => PortfolioPage(
-                            title: 'Portfolio', currencyList: _currencyList)))
+                            title: AppLocalizations.of(context).portfolioButton, currencyList: _currencyList)))
               },
-              child: Container(child: Text('Portfolio')),
+              child: Container(child: Text(AppLocalizations.of(context).portfolioButton)),
             ),
           ],
         ));
