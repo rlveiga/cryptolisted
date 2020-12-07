@@ -25,7 +25,7 @@ class _InputValuePageState extends State<InputValuePage> {
   double amount;
 
   _addToPortfolio() async {
-    await http.post('http://10.0.2.2:3000/portfolio',
+    await http.post('https://cryptolisted.herokuapp.com/portfolio',
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
