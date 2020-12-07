@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mobx/mobx.dart';
 
 import '../models/currency.dart';
 
 class SortedList extends StatelessWidget {
-  List<Currency> _currencyList = [];
+  ObservableList<Currency> _currencyList = ObservableList();
   Function onCurrencySelect;
 
   @override

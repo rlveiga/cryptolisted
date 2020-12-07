@@ -6,8 +6,6 @@ import '../screens/portfolio.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-final currencyStore = CurrencyStore();
-
 class ButtonRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
