@@ -36,10 +36,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
     final currencyStore = Provider.of<CurrencyStore>(context);
 
     Future<List<PortfolioAsset>> _getPortfolio() async {
-    // Android emulator does not recognize localhost, might not work on iOS
-    print('started get');
     var data = await http.get('https://cryptolisted.herokuapp.com/portfolio');
-    print('finished get');
 
     var jsonData = json.decode(data.body);
 
